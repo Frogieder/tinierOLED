@@ -240,15 +240,15 @@ void SSD1306Device::drawPixel(uint8_t x0, uint8_t y0)
 }
 
 void SSD1306Device::print(const char *a) {
-    for (int i = 0; i < strlen(a); ++i) {
+    unsigned int i = 0;
+    while (a[i] != '\0') {
         write(a[i]);
     }
 }
 
 void SSD1306Device::println(const char *a) {
-    for (size_t i = 0; i < strlen(a); ++i) {
-        write(a[i]);
-    }
+    print(a);
+    write('\n');
 }
 
 void SSD1306Device::sleep(void)

@@ -14,18 +14,11 @@
  * Source code for ATtiny 0 and 1 series with megaTinyCore: https://github.com/SimonMerrett/tinyOLED
  * Source code for ATtiny 0 and 1 series without megaTinyCore: https://github.com/Frogieder/tinierOLED
  */
-//#include <stdint.h> //**
-//#include <Arduino.h>
-
-// #include <avr/pgmspace.h>
-// #include <avr/interrupt.h>
-// #include <util/delay.h> //**
 
 #ifndef TINYOLED_H
 #define TINYOLED_H
 
-#include <string.h>
-#include "TinierI2CMaster.h"
+#include "../../tinier-i2c/TinierI2CMaster.h"
 
 #define _nofont_8x16		//tBUG
 #ifndef _nofont_8x16	//tBUG
