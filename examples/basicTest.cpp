@@ -1,13 +1,12 @@
-/* VERY rough test sketch for a few functions from the library.
-*
-*/
-
-#include <tinierOLED.h>
-#include "util/delay.h"
+#include "tinierOLED.h"
+#include <util/delay.h>
 
 unsigned long startPixelY = 15; // the start point pixel height for the graphing line
 
 void setup() {
+    // sets frequency to 5MHz, make sure to let the compiler know about this change.
+    CPU_CCP = CCP_IOREG_gc;
+    CLKCTRL.MCLKCTRLB = 0b11;
     // put your setup code here, to run once:
     _delay_ms(100); // wait for oled to power up? was getting rotated display 180 degrees before
     oled.begin();
