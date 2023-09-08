@@ -35,7 +35,8 @@
 // ----------------------------------------------------------------------------
 
 class SSD1306Device {
-
+private:
+    uint8_t oledFont, oledX, oledY;
 public:
     SSD1306Device(void);
     void begin(void);
@@ -56,8 +57,12 @@ public:
     int write(char c);
     void print(const char *a);
     void println(const char *a);
+    void print_num(uint16_t num);
+    void print_num(uint32_t num);
 };
 
+uint8_t n_digits(uint16_t num);
+uint8_t n_digits(uint32_t num);
 
 extern SSD1306Device oled;
 

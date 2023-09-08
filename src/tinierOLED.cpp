@@ -63,11 +63,11 @@ const uint8_t ssd1306_init_sequence [] /*PROGMEM*/ = {	// Initialization Sequenc
 
 };
 
-uint8_t oledFont, oledX, oledY = 0;
+// Program:    5248 bytes // not anymore, probably~
 
-// Program:    5248 bytes
-
-SSD1306Device::SSD1306Device(void){}
+SSD1306Device::SSD1306Device(void){
+    oledFont, oledX, oledY = 0;
+}
 
 
 void SSD1306Device::begin(void)
@@ -242,7 +242,7 @@ void SSD1306Device::drawPixel(uint8_t x0, uint8_t y0)
 void SSD1306Device::print(const char *a) {
     unsigned int i = 0;
     while (a[i] != '\0') {
-        write(a[i]);
+        write(a[i++]);
     }
 }
 
@@ -256,6 +256,110 @@ void SSD1306Device::sleep(void)
     // placeholder for possible future function.
     // Sounds like reset pin on SSD1306 is necessary, so best method may be to supply/control OLED VCC from GPIO?
 }
+
+void SSD1306Device::print_num(uint16_t num)
+{
+    uint8_t startX = oledX;
+    uint8_t startY = oledY;
+    auto remaining_digits = n_digits(num);
+    do {
+        setCursor((--remaining_digits)*6 + startX, startY);
+        char c = num % 10 + '0';
+        write(c);
+        num /= 10;
+    } while(num > 0);
+}
+
+void SSD1306Device::print_num(uint32_t num)
+{
+    uint8_t startX = oledX;
+    uint8_t startY = oledY;
+    auto remaining_digits = n_digits(num);
+    do {
+        setCursor((--remaining_digits)*6 + startX, startY);
+        char c = num % 10 + '0';
+        write(c);
+        num /= 10;
+    } while(num > 0);
+}
+
+uint8_t n_digits(uint16_t num)
+{
+    if (num >= 10000) { //5+ digits
+        /*
+        if (num < 65535) {
+            return 5;
+        }
+        if (num >= 1000000) { // 7+ digits
+            if (num >= 100000000) { // 9+ digits
+                if (num >= 1000000000)
+                    return 10;
+                else
+                    return 9;
+            } else { // 7 or 8 digits
+                if (num >= 10000000)
+                    return 8;
+                else
+                    return 7;
+            }
+        }
+        if (num >= 100000)
+            return 6;
+        else
+            return 5;
+        */
+        return 5;
+    }
+    else if (num >= 100) {
+        if (num >= 1000)
+            return 4;
+        else
+            return 3;
+    } else {
+        if (num >= 10)
+            return 2;
+        else
+            return 1;
+    }
+}
+
+uint8_t n_digits(uint32_t num)
+{
+    if (num >= 10000) { //5+ digits
+        if (num < 65535) {
+            return 5;
+        }
+        if (num >= 1000000) { // 7+ digits
+            if (num >= 100000000) { // 9+ digits
+                if (num >= 1000000000)
+                    return 10;
+                else
+                    return 9;
+            } else { // 7 or 8 digits
+                if (num >= 10000000)
+                    return 8;
+                else
+                    return 7;
+            }
+        }
+        if (num >= 100000)
+            return 6;
+        else
+            return 5;
+    }
+    else if (num >= 100) {
+        if (num >= 1000)
+            return 4;
+        else
+            return 3;
+    } else {
+        if (num >= 10)
+            return 2;
+        else
+            return 1;
+    }
+}
+
 /*
 
 void SSD1306Device::bitmap(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1, const uint8_t bitmap[])
